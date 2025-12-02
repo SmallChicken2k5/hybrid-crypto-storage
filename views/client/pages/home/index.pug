@@ -1,5 +1,84 @@
 extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
 block main
-  .container.py-4
-    h1.h3 #{title}
-    p.text-secondary Load dữ liệu.
+  +showAlertSuccess(5000)
+  +showAlertError(5000)
+
+  // Hero
+  .bg-light.py-5
+    .container
+      .row.align-items-center.g-4
+        .col-lg-7
+          h1.display-5.fw-bold.mb-3
+            i.bi.bi-shield-lock.text-primary.me-2
+            | Hybrid Crypto Storage
+          p.lead.text-secondary.mb-4
+            | Nền tảng lưu trữ bảo mật sử dụng kết hợp AES-256 và RSA-2048.
+            | File của bạn được mã hóa trước khi tải lên và chỉ bạn mới có thể giải mã.
+          .d-flex.gap-2
+            a.btn.btn-primary.btn-lg.rounded-pill.px-4(href="/files")
+              i.bi.bi-folder-lock.me-2
+              | Quản lý file
+            a.btn.btn-outline-primary.btn-lg.rounded-pill.px-4(href="/files/upload")
+              i.bi.bi-cloud-upload.me-2
+              | Upload bảo mật
+        .col-lg-5
+          .card.border-0.shadow-sm.rounded-4
+            .card-body.p-4
+              .d-flex.align-items-center.mb-3
+                .icon-wrapper.bg-primary.bg-opacity-10.rounded-3.p-3.me-3
+                  i.bi.bi-key-fill.text-light.fs-3
+                div
+                  h5.fw-semibold.mb-1 Bảo mật End-to-End
+                  p.text-muted.mb-0 AES-256 cho dữ liệu, RSA-2048 cho khóa AES
+              .d-flex.align-items-center
+                .icon-wrapper.bg-primary.bg-opacity-10.rounded-3.p-3.me-3
+                  i.bi.bi-lock-fill.text-light.fs-3
+                div
+                  h5.fw-semibold.mb-1 Không lộ nội dung
+                  p.text-muted.mb-0 Máy chủ chỉ lưu dữ liệu đã mã hóa
+
+  // Features
+  .container.py-5
+    .row.g-4
+      .col-md-4
+        .card.border-0.shadow-sm.rounded-4.h-100
+          .card-body.p-4
+            .d-flex.align-items-start
+              .icon-wrapper.bg-primary.bg-opacity-10.rounded-3.p-3.me-3
+                i.bi.bi-shield-check.fs-3.text-light
+              div
+                h5.fw-semibold Bảo vệ toàn diện
+                p.text-muted.mb-0 Mã hóa mạnh, tránh truy cập trái phép.
+      .col-md-4
+        .card.border-0.shadow-sm.rounded-4.h-100
+          .card-body.p-4
+            .d-flex.align-items-start
+              .icon-wrapper.bg-primary.bg-opacity-10.rounded-3.p-3.me-3
+                i.bi.bi-cloud-check.fs-3.text-light
+              div
+                h5.fw-semibold Lưu trữ linh hoạt
+                p.text-muted.mb-0 Dễ dàng upload, quản lý và tải xuống.
+      .col-md-4
+        .card.border-0.shadow-sm.rounded-4.h-100
+          .card-body.p-4
+            .d-flex.align-items-start
+              .icon-wrapper.bg-primary.bg-opacity-10.rounded-3.p-3.me-3
+                i.bi.bi-key.fs-3.text-light
+              div
+                h5.fw-semibold Quản lý khóa an toàn
+                p.text-muted.mb-0 Khóa AES được mã hóa bằng RSA-2048.
+
+  // CTA
+  .container.pb-5
+    .card.border-0.shadow-sm.rounded-4
+      .card-body.p-4.p-md-5
+        .row.align-items-center.g-3
+          .col-md-8
+            h3.fw-bold.mb-2 Sẵn sàng bảo vệ dữ liệu của bạn?
+            p.text-muted.mb-0 Tải lên tệp và để hệ thống mã hóa tự động bảo vệ.
+          .col-md-4.text-md-end
+            a.btn.btn-primary.btn-lg.rounded-pill.px-4(href="/files/upload")
+              i.bi.bi-cloud-upload-fill.me-2
+              | Upload ngay

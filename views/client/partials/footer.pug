@@ -1,5 +1,129 @@
 footer.bg-dark.text-light.mt-5
-  .container.py-4
-    .small © #{new Date().getFullYear()} MyWebsite. All rights reserved.
-    .small Developed by 
-      a.text-light(href="https://github.com/smallchicken") SmallChicken
+  .container
+    .row.py-5
+      .col-lg-4.col-md-6.mb-4.mb-lg-0
+        .d-flex.align-items-center.mb-3
+          .icon-wrapper.bg-primary-footer.rounded-3.p-2.me-2
+            i.bi.bi-shield-lock-fill.fs-4.text-white
+          h5.mb-0.fw-bold.text-white SecureStorage
+        p.text-light.small.opacity-75
+          | Nền tảng lưu trữ file an toàn với mã hóa end-to-end AES-256 và RSA-2048. 
+          | Bảo vệ dữ liệu của bạn một cách tuyệt đối.
+        .social-links.d-flex.gap-2.mt-3
+          a.btn.btn-outline-light.btn-sm.rounded-circle(href='#' title='Facebook')
+            i.bi.bi-facebook
+          a.btn.btn-outline-light.btn-sm.rounded-circle(href='#' title='Twitter')
+            i.bi.bi-twitter
+          a.btn.btn-outline-light.btn-sm.rounded-circle(href='#' title='LinkedIn')
+            i.bi.bi-linkedin
+          a.btn.btn-outline-light.btn-sm.rounded-circle(href='#' title='GitHub')
+            i.bi.bi-github
+      
+      .col-lg-2.col-md-6.mb-4.mb-lg-0
+        h6.text-primary-footer.fw-bold.mb-3.text-uppercase Quick Links
+        ul.list-unstyled
+          li.mb-2
+            a.text-light.text-decoration-none.small.opacity-75.hover-link(href='/')
+              i.bi.bi-chevron-right.me-1
+              | Home
+          li.mb-2
+            a.text-light.text-decoration-none.small.opacity-75.hover-link(href='/about')
+              i.bi.bi-chevron-right.me-1
+              | About Us
+          li.mb-2
+            a.text-light.text-decoration-none.small.opacity-75.hover-link(href='/files')
+              i.bi.bi-chevron-right.me-1
+              | My Files
+          li.mb-2
+            a.text-light.text-decoration-none.small.opacity-75.hover-link(href='/files/upload')
+              i.bi.bi-chevron-right.me-1
+              | Upload
+      
+      .col-lg-3.col-md-6.mb-4.mb-lg-0
+        h6.text-primary-footer.fw-bold.mb-3.text-uppercase Security
+        ul.list-unstyled
+          li.mb-2
+            .d-flex.align-items-start
+              i.bi.bi-shield-check.text-success.me-2.mt-1
+              small.text-light.opacity-75 AES-256 Encryption
+          li.mb-2
+            .d-flex.align-items-start
+              i.bi.bi-key-fill.text-primary-footer.me-2.mt-1
+              small.text-light.opacity-75 RSA-2048 Keys
+          li.mb-2
+            .d-flex.align-items-start
+              i.bi.bi-lock-fill.text-info.me-2.mt-1
+              small.text-light.opacity-75 End-to-End Encryption
+          li.mb-2
+            .d-flex.align-items-start
+              i.bi.bi-cloud-check.text-primary-footer.me-2.mt-1
+              small.text-light.opacity-75 Secure Cloud Storage
+      
+      .col-lg-3.col-md-6
+        h6.text-primary-footer.fw-bold.mb-3.text-uppercase Contact Info
+        ul.list-unstyled
+          li.mb-2
+            .d-flex.align-items-start
+              i.bi.bi-envelope-fill.text-primary-footer.me-2.mt-1
+              small.text-light.opacity-75 thp.gia@gmail.com
+          li.mb-2
+            .d-flex.align-items-start
+              i.bi.bi-geo-alt-fill.text-primary-footer.me-2.mt-1
+              small.text-light.opacity-75 Ho Chi Minh City, Vietnam
+    
+    hr.border-secondary.opacity-25
+    
+    .row.py-3
+      .col-md-6.text-center.text-md-start
+        small.text-light.opacity-75
+          | © #{new Date().getFullYear()} SecureStorage. All rights reserved.
+      .col-md-6.text-center.text-md-end
+        small.text-light.opacity-75
+          | Developed with 
+          i.bi.bi-heart-fill.text-danger.mx-1
+          | by 
+          a.text-primary-footer.text-decoration-none.fw-semibold.hover-link(href="https://github.com/smallchicken") SmallChicken
+
+  style.
+    .bg-primary-footer {
+      background-color: #667eea !important;
+    }
+    .text-primary-footer {
+      color: #8fa0f3 !important;
+    }
+    .social-links .btn {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .social-links .btn:hover {
+      background-color: #667eea;
+      border-color: #667eea;
+      color: #fff;
+      transform: translateY(-3px);
+    }
+    .hover-link {
+      transition: all 0.2s ease;
+    }
+    .hover-link:hover {
+      opacity: 1 !important;
+      color: #8fa0f3 !important;
+      padding-left: 5px;
+    }
+    footer {
+      position: relative;
+    }
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #667eea;
+      box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+    }

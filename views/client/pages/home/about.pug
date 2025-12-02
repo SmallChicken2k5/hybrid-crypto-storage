@@ -1,4 +1,78 @@
 extends ../../layouts/default.pug
+
 block main
-  .container.py-4
-    h1.h3 #{title}
+  // Intro
+  .bg-light.py-5
+    .container
+      .row.g-4.align-items-center
+        .col-lg-8
+          h1.display-5.fw-bold
+            i.bi.bi-info-circle.text-primary.me-2
+            | Về đồ án: Hybrid Crypto Storage
+          p.lead.text-secondary.mt-3
+            | Đề tài cuối kỳ môn Bảo mật thông tin. Hệ thống minh họa cơ chế mã hóa
+            | kết hợp: AES-256 cho dữ liệu và RSA-2048 cho khóa đối xứng (AES key).
+        .col-lg-4
+          .card.border-0.shadow-sm.rounded-4
+            .card-body.p-4
+              .d-flex.align-items-center.mb-2
+                i.bi.bi-shield-lock.text-primary.fs-4.me-2
+                h6.mb-0 Mục tiêu
+              p.text-muted.mb-0
+                | Xây dựng nền tảng upload/lưu trữ file an toàn, chỉ chủ sở hữu có thể giải mã.
+
+  // Details
+  .container.py-5
+    .row.g-4
+      .col-md-6
+        .card.border-0.shadow-sm.rounded-4.h-100
+          .card-body.p-4
+            h5.fw-bold.mb-3 Kiến trúc bảo mật
+            ul.list-unstyled.mb-0
+              li.d-flex.mb-2
+                i.bi.bi-file-lock2.text-primary.me-2
+                span Mã hóa nội dung bằng AES-256-CBC.
+              li.d-flex.mb-2
+                i.bi.bi-key.text-primary.me-2
+                span Khóa AES được mã hóa bằng RSA-2048 (public key người dùng).
+              li.d-flex.mb-2
+                i.bi.bi-safe2.text-primary.me-2
+                span Máy chủ chỉ lưu trữ dữ liệu đã mã hóa và metadata cần thiết.
+      .col-md-6
+        .card.border-0.shadow-sm.rounded-4.h-100
+          .card-body.p-4
+            h5.fw-bold.mb-3 Luồng xử lý
+            ol.mb-0
+              li.mb-2 Upload: mã hóa AES ⇒ mã hóa AES key bằng RSA ⇒ lưu trữ.
+              li.mb-2 Download: giải mã AES key bằng RSA private ⇒ giải mã nội dung AES.
+              li.mb-2 Bảo toàn: không ai có thể đọc nội dung nếu thiếu private key.
+
+  // Tech stack
+  .container.pb-5
+    .card.border-0.shadow-sm.rounded-4
+      .card-body.p-4
+        h5.fw-bold.mb-3 Công nghệ sử dụng
+        .row.g-3
+          .col-md-3
+            .d-flex.align-items-center
+              i.bi.bi-node-plus.text-success.fs-3.me-2
+              span Node.js, Express, Pug
+          .col-md-3
+            .d-flex.align-items-center
+              i.bi.bi-database-fill-gear.text-primary.fs-3.me-2
+              span MongoDB, Mongoose
+          .col-md-3
+            .d-flex.align-items-center
+              i.bi.bi-bootstrap-fill.text-primary.fs-3.me-2
+              span Bootstrap 5, Icons
+          .col-md-3
+            .d-flex.align-items-center
+              i.bi.bi-lock-fill.text-primary.fs-3.me-2
+              span Crypto: AES-256, RSA-2048
+
+  // CTA
+  .container.pb-5
+    .text-center
+      a.btn.btn-primary.btn-lg.rounded-pill.px-5(href="/files")
+        i.bi.bi-folder-lock.me-2
+        | Vào quản lý file

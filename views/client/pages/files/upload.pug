@@ -1,0 +1,182 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  +showAlertSuccess(5000)
+  +showAlertError(5000)
+  
+  .container.py-5
+    .row.justify-content-center
+      .col-lg-8
+        // Breadcrumb
+        nav(aria-label="breadcrumb")
+          ol.breadcrumb
+            li.breadcrumb-item
+              a(href="/files") 
+                i.bi.bi-house-door.me-1
+                | Files
+            li.breadcrumb-item.active(aria-current="page") Upload New File
+        
+        // Main Card
+        .card.border-0.shadow-lg.rounded-4.overflow-hidden
+          .card-header.bg-gradient.text-white.py-4.border-0
+            .d-flex.align-items-center.justify-content-center
+              .icon-circle.bg-white.bg-opacity-25.rounded-circle.p-3.me-3
+                i.bi.bi-cloud-upload-fill.fs-1
+              div
+                h3.mb-1.fw-bold Upload Secure File
+                p.mb-0.opacity-75 Encrypt and store your files safely
+          
+          .card-body.p-4.p-md-5
+            // Info Alert
+            .alert.alert-info.border-0.rounded-3.mb-4(role="alert")
+              .d-flex
+                i.bi.bi-info-circle-fill.fs-4.me-3.text-info
+                div
+                  h6.alert-heading.mb-1 End-to-End Encryption
+                  small Files are encrypted with AES-256 + RSA-2048 before upload
+            
+            form(action="/files/upload" method="POST" enctype="multipart/form-data")
+              // File Upload Zone
+              .upload-zone.border-2.border-dashed.rounded-4.p-5.text-center.mb-4#uploadZone
+                input#fileInput.d-none(
+                  type="file" 
+                  name="file" 
+                  required
+                  accept="*/*"
+                )
+                label.cursor-pointer.w-100(for="fileInput")
+                  .upload-icon.mb-3
+                    i.bi.bi-cloud-arrow-up.display-1.text-primary
+                  h5.mb-2 Click to upload or drag and drop
+                  p.text-muted.mb-0.small
+                    | Maximum file size: 50MB
+                    br
+                    | All file types supported
+              
+              // File Preview
+              #filePreview.d-none
+                .card.bg-light.border-0.rounded-3.mb-4
+                  .card-body.p-4
+                    .row.align-items-center
+                      .col-auto
+                        .file-icon.bg-primary.bg-opacity-10.rounded-3.p-3
+                          i.bi.bi-file-earmark-fill.fs-2.text-primary
+                      .col
+                        h6.mb-1.fw-semibold#fileName
+                        .d-flex.gap-3.text-muted.small
+                          span
+                            i.bi.bi-hdd.me-1
+                            span#fileSize
+                          span
+                            i.bi.bi-filetype-txt.me-1
+                            span#fileType
+                      .col-auto
+                        button.btn.btn-sm.btn-outline-danger.rounded-pill(type="button" onclick="clearFile()")
+                          i.bi.bi-x-lg
+              
+              // Security Info
+              .row.g-3.mb-4
+                .col-md-6
+                  .d-flex.align-items-start
+                    .icon-box.bg-success.bg-opacity-10.rounded-3.p-2.me-3
+                      i.bi.bi-shield-check.text-success.fs-5
+                    div
+                      h6.mb-1.fw-semibold AES-256 Encryption
+                      small.text-muted Military-grade encryption
+                .col-md-6
+                  .d-flex.align-items-start
+                    .icon-box.bg-warning.bg-opacity-10.rounded-3.p-2.me-3
+                      i.bi.bi-key-fill.text-warning.fs-5
+                    div
+                      h6.mb-1.fw-semibold RSA-2048 Keys
+                      small.text-muted Secure key exchange
+              
+              // Action Buttons
+              .d-grid.gap-2.d-md-flex.justify-content-md-between
+                a.btn.btn-outline-secondary.rounded-pill.px-4.py-3(href="/files")
+                  i.bi.bi-arrow-left.me-2
+                  | Cancel
+                button.btn.btn-primary.btn-lg.rounded-pill.px-5.py-3(type="submit" id="uploadBtn")
+                  i.bi.bi-shield-lock-fill.me-2
+                  | Encrypt & Upload
+                  i.bi.bi-arrow-right.ms-2
+
+  style.
+    .bg-gradient {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .upload-zone {
+      border-color: #dee2e6;
+      transition: all 0.3s ease;
+      background-color: #f8f9fa;
+    }
+    .upload-zone:hover {
+      border-color: #667eea;
+      background-color: #fff;
+    }
+    .cursor-pointer {
+      cursor: pointer;
+    }
+    .upload-zone.dragover {
+      border-color: #667eea;
+      background-color: #e7f3ff;
+    }
+
+  script.
+    const fileInput = document.getElementById('fileInput');
+    const filePreview = document.getElementById('filePreview');
+    const fileName = document.getElementById('fileName');
+    const fileSize = document.getElementById('fileSize');
+    const fileType = document.getElementById('fileType');
+    const uploadZone = document.getElementById('uploadZone');
+    const uploadBtn = document.getElementById('uploadBtn');
+    
+    // File input change
+    fileInput.addEventListener('change', function(e) {
+      if (this.files.length > 0) {
+        showFilePreview(this.files[0]);
+      }
+    });
+    
+    // Drag and drop
+    uploadZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadZone.classList.add('dragover');
+    });
+    
+    uploadZone.addEventListener('dragleave', () => {
+      uploadZone.classList.remove('dragover');
+    });
+    
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        fileInput.files = files;
+        showFilePreview(files[0]);
+      }
+    });
+    
+    function showFilePreview(file) {
+      fileName.textContent = file.name;
+      fileSize.textContent = formatFileSize(file.size);
+      fileType.textContent = file.type || 'Unknown';
+      filePreview.classList.remove('d-none');
+      uploadZone.classList.add('d-none');
+    }
+    
+    function clearFile() {
+      fileInput.value = '';
+      filePreview.classList.add('d-none');
+      uploadZone.classList.remove('d-none');
+    }
+    
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    }

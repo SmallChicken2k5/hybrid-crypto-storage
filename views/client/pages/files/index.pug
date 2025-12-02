@@ -1,0 +1,181 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  - const getFileIcon = (mimeType) => {
+  -   if (!mimeType) return 'bi-file-earmark';
+  -   const t = String(mimeType).toLowerCase();
+  -   if (t.includes('pdf')) return 'bi-file-earmark-pdf';
+  -   if (t.includes('image')) return 'bi-file-earmark-image';
+  -   if (t.includes('video')) return 'bi-file-earmark-play';
+  -   if (t.includes('audio')) return 'bi-file-earmark-music';
+  -   if (t.includes('zip') || t.includes('rar') || t.includes('compressed')) return 'bi-file-earmark-zip';
+  -   if (t.includes('word') || t.includes('msword') || t.includes('vnd.openxmlformats-officedocument.wordprocessingml.document')) return 'bi-file-earmark-word';
+  -   if (t.includes('excel') || t.includes('spreadsheet') || t.includes('vnd.ms-excel') || t.includes('vnd.openxmlformats-officedocument.spreadsheetml.sheet')) return 'bi-file-earmark-excel';
+  -   if (t.includes('powerpoint') || t.includes('presentation') || t.includes('vnd.ms-powerpoint') || t.includes('vnd.openxmlformats-officedocument.presentationml.presentation')) return 'bi-file-earmark-ppt';
+  -   return 'bi-file-earmark';
+  - }
+  +showAlertSuccess(5000)
+  +showAlertError(5000)
+
+  .container.py-5
+    .row.mb-4
+      .col
+        h1.display-6.fw-bold.mb-2
+          i.bi.bi-folder-fill.me-3.text-primary
+          | My Secure Files
+        p.text-muted.mb-0 Manage your encrypted files with end-to-end protection
+      .col-auto
+        a.btn.btn-primary.btn-lg.rounded-pill.shadow-sm(href="/files/upload")
+          i.bi.bi-cloud-upload-fill.me-2
+          | Upload New File
+          i.bi.bi-plus-circle.ms-2
+
+    .row.g-3.mb-4
+      .col-md-3
+        .card.border-0.shadow-sm.rounded-3.h-100
+          .card-body
+            .d-flex.justify-content-between.align-items-center
+              div
+                p.text-muted.mb-1.small Total Files
+                h4.mb-0.fw-bold #{files ? files.length : 0}
+              .icon-box.bg-secondary.bg-opacity-10.rounded-3.p-3
+                i.bi.bi-files.fs-4.text-secondary
+      .col-md-3
+        .card.border-0.shadow-sm.rounded-3.h-100
+          .card-body
+            .d-flex.justify-content-between.align-items-center
+              div
+                p.text-muted.mb-1.small Total Size
+                h4.mb-0.fw-bold
+                  - let totalSize = files ? files.reduce((sum, f) => sum + f.size, 0) : 0
+                  | #{(totalSize / 1024 / 1024).toFixed(2)} MB
+              .icon-box.bg-success.bg-opacity-10.rounded-3.p-3
+                i.bi.bi-hdd-fill.fs-4.text-success
+      .col-md-3
+        .card.border-0.shadow-sm.rounded-3.h-100
+          .card-body
+            .d-flex.justify-content-between.align-items-center
+              div
+                p.text-muted.mb-1.small Encrypted
+                h4.mb-0.fw-bold 100%
+              .icon-box.bg-warning.bg-opacity-10.rounded-3.p-3
+                i.bi.bi-shield-lock-fill.fs-4.text-warning
+      .col-md-3
+        .card.border-0.shadow-sm.rounded-3.h-100
+          .card-body
+            .d-flex.justify-content-between.align-items-center
+              div
+                p.text-muted.mb-1.small Storage Used
+                h4.mb-0.fw-bold 25%
+              .icon-box.bg-info.bg-opacity-10.rounded-3.p-3
+                i.bi.bi-pie-chart-fill.fs-4.text-info
+
+    if files && files.length > 0
+      .card.border-0.shadow-sm.rounded-4
+        .card-body.p-0
+          .table-responsive
+            table.table.table-hover.align-middle.mb-0
+              thead.bg-light
+                tr
+                  th.px-4.py-3.border-0(style="width:50px")
+                    .form-check
+                      input.form-check-input(type="checkbox" id="selectAll")
+                  th.py-3.border-0
+                    i.bi.bi-file-earmark.me-2
+                    | File Name
+                  th.py-3.border-0
+                    i.bi.bi-hdd.me-2
+                    | Size
+                  th.py-3.border-0
+                    i.bi.bi-shield-check.me-2
+                    | Status
+                  th.py-3.border-0
+                    i.bi.bi-calendar.me-2
+                    | Uploaded
+                  th.py-3.border-0.text-center Actions
+              tbody
+                each file, index in files
+                  - const iconClass = getFileIcon(file.mimeType)
+                  tr.file-row
+                    td.px-4
+                      .form-check
+                        input.form-check-input(type="checkbox" value=file.id)
+                    td
+                      .d-flex.align-items-center
+                        .file-icon.me-3
+                          i(class=`bi ${iconClass} fs-3 text-primary`)
+                        div
+                          h6.mb-0.fw-semibold #{file.originalName}
+                          small.text-muted #{file.mimeType}
+                    td.text-muted #{(file.size / 1024).toFixed(2)} KB
+                    td
+                      span.badge.bg-success.bg-opacity-10.text-success.rounded-pill
+                        i.bi.bi-shield-check.me-1
+                        | Encrypted
+                    td.text-muted
+                      small #{new Date(file.createdAt).toLocaleDateString('vi-VN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                    td
+                      .d-flex.gap-2.justify-content-center
+                        a.btn.btn-sm.btn-outline-primary.rounded-pill(
+                          href=`/files/download/${file.id}`
+                          title="Download"
+                          data-bs-toggle="tooltip"
+                        )
+                          i.bi.bi-download
+                        button.btn.btn-sm.btn-outline-info.rounded-pill(
+                          title="Share"
+                          data-bs-toggle="tooltip"
+                        )
+                          i.bi.bi-share
+                        button.btn.btn-sm.btn-outline-danger.rounded-pill(
+                          onclick=`confirmDelete('${file.id}', '${file.originalName}')`
+                          title="Delete"
+                          data-bs-toggle="tooltip"
+                        )
+                          i.bi.bi-trash
+    else
+      .card.border-0.shadow-sm.rounded-4
+        .card-body.text-center.py-5
+          .empty-state
+            .icon-wrapper.mb-4
+              i.bi.bi-inbox.display-1.text-muted
+            h4.mb-3 No Files Yet
+            p.text-muted.mb-4 Start uploading your files to secure them with encryption
+            a.btn.btn-primary.btn-lg.rounded-pill.px-5(href="/files/upload")
+              i.bi.bi-cloud-upload-fill.me-2
+              | Upload Your First File
+
+  .modal.fade#deleteModal(tabindex="-1")
+    .modal-dialog.modal-dialog-centered
+      .modal-content.border-0.shadow-lg.rounded-4
+        .modal-header.border-0.pb-0
+          h5.modal-title
+            i.bi.bi-exclamation-triangle-fill.text-warning.me-2
+            | Confirm Delete
+          button.btn-close(type="button" data-bs-dismiss="modal")
+        .modal-body.px-4.pb-4
+          p Are you sure you want to delete this file?
+          p.fw-semibold.mb-0#fileToDelete
+        .modal-footer.border-0
+          button.btn.btn-secondary.rounded-pill(type="button" data-bs-dismiss="modal") Cancel
+          button.btn.btn-danger.rounded-pill#confirmDeleteBtn Delete
+
+  form#deleteForm(method="POST" style="display:none")
+    input(type="hidden" name="_method" value="DELETE")
+
+  script.
+    let fileIdToDelete = '';
+    function confirmDelete(fileId, fileName) {
+      fileIdToDelete = fileId;
+      document.getElementById('fileToDelete').textContent = fileName;
+      const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+      modal.show();
+    }
+    document.getElementById('confirmDeleteBtn')?.addEventListener('click', function () {
+      const form = document.getElementById('deleteForm');
+      form.action = `/files/delete/${fileIdToDelete}`;
+      form.submit();
+    });
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(el => new bootstrap.Tooltip(el));
